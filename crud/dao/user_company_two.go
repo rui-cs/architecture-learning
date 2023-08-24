@@ -11,23 +11,29 @@ type UserCompanyTwo struct {
 	Special2 string
 }
 
-func (u *UserCompanyTwo) Add(db *gorm.DB) error {
-	return db.Create(u).Error
+type UserCompanyTwoDao struct {
+	db *gorm.DB
 }
 
-func (u *UserCompanyTwo) Del(db *gorm.DB) error {
-	return db.Delete(u, u.Id).Error
+func NewUserCompanyTwoDao(db *gorm.DB) *UserCompanyTwoDao {
+	return &UserCompanyTwoDao{db: db}
 }
 
-func (u *UserCompanyTwo) Upd(db *gorm.DB) error {
-	return db.Model(u).Updates(*u).Error
+func (u *UserCompanyTwoDao) Add(data *UserCompanyTwo) error {
+	return u.db.Create(data).Error
 }
 
-func (u *UserCompanyTwo) Get(db *gorm.DB, cond []interface{}) ([]map[string]interface{}, error) {
+func (u *UserCompanyTwoDao) Del(data *UserCompanyTwo) error {
+	return u.db.Delete(data, data.Id).Error
+}
+
+func (u *UserCompanyTwoDao) Upd(data *UserCompanyTwo) error {
+	return u.db.Model(data).Updates(data).Error
+}
+
+func (u *UserCompanyTwoDao) Get(cond []interface{}) ([]map[string]interface{}, error) {
 	var res []map[string]interface{}
-	var err error
-
-	err = db.Model(u).Find(&res, cond...).Error
+	err := u.db.Model(&UserCompanyTwo{}).Find(&res, cond).Error
 
 	return res, err
 }

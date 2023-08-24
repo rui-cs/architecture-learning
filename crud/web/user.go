@@ -23,7 +23,7 @@ func (u *UserHandler) RegisterRoutes(server *gin.Engine) {
 	ug.POST("/upd", u.Upd)
 
 	ug.POST("/getByCompany", u.GetByCompany)
-	ug.POST("/getByID", u.GetByCompany)
+	ug.POST("/getByID", u.GetByID)
 }
 
 func (u *UserHandler) Add(ctx *gin.Context) {
@@ -77,7 +77,7 @@ func (u *UserHandler) GetByCompany(ctx *gin.Context) {
 		return
 	}
 
-	get, err := u.us.Get(&req, []interface{}{"company=?", req.Company})
+	get, err := u.us.Get(&req)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, "服务错误")
 		return
@@ -92,7 +92,7 @@ func (u *UserHandler) GetByID(ctx *gin.Context) {
 		return
 	}
 
-	get, err := u.us.Get(&req, []interface{}{"id=?", req.ID})
+	get, err := u.us.Get(&req, req.ID)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, "服务错误")
 		return

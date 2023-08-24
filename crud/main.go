@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rui-cs/architecture-learning/dao"
+	"github.com/rui-cs/architecture-learning/repository"
 	"github.com/rui-cs/architecture-learning/service"
 	"github.com/rui-cs/architecture-learning/web"
 	"gorm.io/driver/mysql"
@@ -43,8 +44,16 @@ func initWebServer() *gin.Engine {
 }
 
 func initUser(server *gin.Engine, db *gorm.DB) {
-	ud := dao.NewUserDao(db)
-	us := service.NewUserService(ud)
+	udOne := dao.NewUserCompanyOneDao(db)
+	udTwo := dao.NewUserCompanyTwoDao(db)
+
+	repository.Init(udOne, udTwo)
+
+	urOne := repository.NewUserCompanyOneRepo(nil, udOne)
+	urTwo := repository.NewUserCompanyTwoRepo(nil, udTwo)
+
+	us := service.NewUserService(urOne, urTwo)
+
 	c := web.NewUserHandler(us)
 	c.RegisterRoutes(server)
 }

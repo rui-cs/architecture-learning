@@ -13,7 +13,7 @@ type UserCompanyOne struct {
 	Special4 string `json:"special4"`
 }
 
-func (u *UserCompanyOne) toDaoUserCompanyOne() *dao.UserCompanyOne {
+func (u *UserCompanyOne) ToDaoUserCompanyOne() *dao.UserCompanyOne {
 	return &dao.UserCompanyOne{
 		Id:       u.Id,
 		Name:     u.Name,
@@ -22,20 +22,4 @@ func (u *UserCompanyOne) toDaoUserCompanyOne() *dao.UserCompanyOne {
 		Special3: u.Special3,
 		Special4: u.Special4,
 	}
-}
-
-func (u *UserCompanyOne) Add(dao dao.CRUDDao) error {
-	return dao.Add(u.toDaoUserCompanyOne())
-}
-
-func (u *UserCompanyOne) Del(dao dao.CRUDDao) error {
-	return dao.Del(u.toDaoUserCompanyOne())
-}
-
-func (u *UserCompanyOne) Upd(dao dao.CRUDDao) error {
-	return dao.Upd(u.toDaoUserCompanyOne())
-}
-
-func (u *UserCompanyOne) Get(dao dao.CRUDDao, cond []interface{}) ([]map[string]interface{}, error) {
-	return dao.Get(u.toDaoUserCompanyOne(), cond)
 }
